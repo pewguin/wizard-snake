@@ -716,8 +716,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   formerPositions: []
   segments: []
+  ghostSegments: []
   segmentPrefab: {fileID: 851021250100231856, guid: 5f29a4dc8d32be64bbdfcb7dd974737a, type: 3}
+  ghostSegmentPrefab: {fileID: 851021250100231856, guid: ee51aff573a424c43a90dae356e6add9, type: 3}
+  ghostMovesBack: 8
   gridManager: {fileID: 1937905876}
+  maximumGravityChecks: 25
 --- !u!4 &1844493428
 Transform:
   m_ObjectHideFlags: 0
