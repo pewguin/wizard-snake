@@ -8,7 +8,10 @@ public class WizardSnake : MonoBehaviour
 {
     public List<Vector2Int> formerPositions = new List<Vector2Int>();
     public List<GameObject> segments = new List<GameObject>();
+    public List<GameObject> ghostSegments = new List<GameObject>();
     public GameObject segmentPrefab;
+    public GameObject ghostSegmentPrefab;
+    public int ghostMovesBack = 8;
     public GridManager gridManager;
     // Amount of times gravity should pull down before the snake is considered over the void (0 to turn off gravity)
     public int maximumGravityChecks = 25;
@@ -61,6 +64,10 @@ public class WizardSnake : MonoBehaviour
             {
                 formerPositions.Add(position);
                 MoveSegments();
+                if (formerPositions.Count > segments.Count + ghostMovesBack)
+                {
+                    MoveGhostSegments();
+                }
                 Gravity(maximumGravityChecks);
             }
         }
@@ -68,7 +75,9 @@ public class WizardSnake : MonoBehaviour
     public void AddSegment()
     {
         var g = Instantiate(segmentPrefab, transform);
+        var gh = Instantiate(ghostSegmentPrefab, Vector3.up * 1000f, Quaternion.identity, transform);
         segments.Add(g);
+        ghostSegments.Add(gh);
     }
     public void MoveSegments()
     {
@@ -78,6 +87,16 @@ public class WizardSnake : MonoBehaviour
             pos.x += 0.5f;
             pos.y += 0.5f;
             segments[i].transform.position = pos;
+        }
+    }
+    public void MoveGhostSegments()
+    {
+        for (int i = 0; i < ghostSegments.Count; i++)
+        {
+            var pos = (Vector3)(Vector3Int)formerPositions[formerPositions.Count - 1 - i - ghostMovesBack];
+            pos.x += 0.5f;
+            pos.y += 0.5f;
+            ghostSegments[i].transform.position = pos;
         }
     }
     public bool Gravity(int count)
